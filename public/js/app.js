@@ -13,7 +13,8 @@ let localStream,
   roomIdInput,
   joinForm,
   joinRoomDialog,
-  currentRoomId
+  currentRoomId,
+  roomAttributes
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCcGGTy_mIfvKBzLS8c_K-Jnl-ENdCdDQU',
@@ -103,8 +104,6 @@ async function createRoom () {
   const roomRef = await addDoc(collection(db, 'rooms'), {})
   const candidatesRef = collection(db, 'rooms', roomRef.id, 'candidates')
 
-  setCurrentRoomId(roomRef.id)
-
   const localStream = localVideo.srcObject
   localStream.getTracks().forEach(function (track) {
     peerConnection.addTrack(track, localStream)
@@ -135,6 +134,9 @@ async function createRoom () {
 
   const { type, sdp } = localDescription
   setDoc(roomRef, { offer: { type, sdp } })
+
+  setCurrentRoomId(roomRef.id)
+  appendJoinURL(roomRef.id)
 }
 
 async function joinRoom () {
@@ -174,6 +176,8 @@ async function joinRoom () {
 }
 
 function startToJoinRoom () {
+  const params = new URLSearchParams(location.search)
+  roomIdInput.value = params.get('roomId') || ''
   joinRoomDialog.showModal()
 }
 
@@ -184,6 +188,26 @@ function cancelToJoinRoom () {
 
 function setCurrentRoomId (roomId) {
   currentRoomId.innerText = roomId
+}
+
+function appendJoinURL (roomId) {
+  const dt = document.createElement('dt')
+  const dd = document.createElement('dd')
+  const anchor = document.createElement('a')
+
+  const params = new URLSearchParams({ roomId })
+
+  const href = `${window.location.href}?${params.toString()}`
+
+  anchor.setAttribute('target', '_blank')
+  anchor.setAttribute('href', href)
+  anchor.innerHTML = href
+
+  dt.innerHTML = '入室リンク'
+
+  roomAttributes.appendChild(dt)
+  roomAttributes.appendChild(dd)
+  dd.appendChild(anchor)
 }
 
 function init () {
@@ -197,6 +221,7 @@ function init () {
   joinForm = document.querySelector('#joinForm')
   joinRoomDialog = document.querySelector('#joinRoomDialog')
   currentRoomId = document.querySelector('#currentRoomId')
+  roomAttributes = document.querySelector('#roomAttributes')
 
   createRoomButton.disabled = true
   joinRoomButton.disabled = true
