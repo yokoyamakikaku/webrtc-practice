@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>WebRTCの技術検証</title>
+  <style>
+    video {
+      width: 600px;
+      height: 400px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>WebRTC の技術検証</h1>
+    <h2>ルームを作る場合</h2>
+    <ol>
+      <li>カメラとマイクへのアクセスを許可してください</li>
+      <li>ルームを作るを選択</li>
+      <li>発行されたルームIDをルームに参加する人に伝えてください</li>
+    </ol>
+    <h2>ルームに入る場合</h2>
+    <ol>
+      <li>カメラとマイクへのアクセスを許可してください</li>
+      <li>ルームに入るを選択</li>
+      <li>入りたいルームのIDを入力してください</li>
+    </ol>
+    <menu>
+      <button id="setupMediaButton">カメラとマイクへのアクセスを許可する</button>
+      <button id="createRoomButton">ルームを作る</button>
+      <button id="joinRoomButton">ルームに入る</button>
+      <dialog id="joinRoomDialog">
+          <form method="dialog" id="joinForm">
+          <p>
+            <label for="roomIdInput">入るルームのID</label>
+            <input id="roomIdInput" type="text" placeholder="ルームID">
+          </p>
+          <menu>
+            <button>閉じる</button>
+            <button>ルームに入る</button>
+          </menu>
+        </form>
+      </dialog>
+    </menu>
+    <h2>ルーム</h2>
+    <dl>
+      <dt>ルームID</dt>
+      <dd id="currentRoomId"></dd>
+    </dl>
+  </header>
+  <section>
+    <h2>自分の映像</h2>
+    <div>
+      <label for="cameraSelect">カメラ</label>
+      <select id="cameraSelect"></select>
+    </div>
+    <video id="localVideo" autoplay></video>
+    <hr />
+  </section>
+  <section>
+    <h2>相手の映像</h2>
+    <video id="remoteVideo" autoplay></video>
+    <hr />
+  </section>
+  <script src="/js/app.js" type="module"></script>
+</body>
+</html>
