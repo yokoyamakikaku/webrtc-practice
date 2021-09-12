@@ -197,7 +197,7 @@ function appendJoinURL (roomId) {
 
   const params = new URLSearchParams({ roomId })
 
-  const href = `${window.location.href}?${params.toString()}`
+  const href = `${window.location.href}${params.toString()}`
 
   anchor.setAttribute('target', '_blank')
   anchor.setAttribute('href', href)
